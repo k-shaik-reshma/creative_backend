@@ -55,4 +55,32 @@ class User
         
         return false;
     }
+
+
+    public static function findByEmail(string $email): ?User
+    {
+        $database = new Database();
+        $conn = $database->connect();
+    
+        $query = "SELECT * FROM users WHERE email = :email LIMIT 1";
+        $stmt = $conn->prepare($query); 
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+    
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$row) {
+            return null; // User not found
+        }
+    
+        // Create new User object and populate it with fetched data
+        $user = new User();
+        $user->id = $row['id'];
+        $user->type = $row['type'];
+        $user->password = $row['password'];
+        $user->email = $row['email'];
+        $user->full_name = $row['full_name'];
+    
+        return $user;
+    }
+
 }

@@ -16,4 +16,15 @@ class UserService
 
         return $user->create();
     }
+
+    public function authenticateUser(string $email, string $password): bool
+    {   
+        $user = User::findByEmail($email);
+
+        if (!$user || !password_verify($password, $user->password)) {
+            return false; // Authentication failed
+        }
+
+        return true; // Authentication succeeded
+    }
 }

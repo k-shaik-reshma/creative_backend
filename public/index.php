@@ -38,4 +38,5 @@ $app->get('/api/hello', function ($request, $response, $args) {
 $app->post('/api/v1/users', [UserController::class, 'createUser']);
 
 
+$app->post('/api/v1/login', [UserController::class, 'login']);
 $app->run();

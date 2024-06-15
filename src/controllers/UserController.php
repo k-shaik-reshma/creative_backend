@@ -16,7 +16,7 @@ class UserController
     }
 
     public function createUser(Request $request, Response $response, array $args): Response
-    {   
+    {
         $data = $request->getParsedBody();
 
         // Validate input data
@@ -36,4 +36,24 @@ class UserController
             return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
         }
     }
+    public function login(Request $request, Response $response, array $args): Response
+    {
+        $data = $request->getParsedBody();
+
+        if (empty($data['email']) || empty($data['password'])) {
+            $response->getBody()->write(json_encode(['message' => 'Email and password are required']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+
+        $authenticated = $this->userService->authenticateUser($data['email'], $data['password']);
+
+        if (!$authenticated) {
+            $response->getBody()->write(json_encode(['message' => 'Invalid credentials']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
+        }
+
+        $response->getBody()->write(json_encode(['message' => 'Login successful']));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    }
+
 }
