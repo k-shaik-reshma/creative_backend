@@ -4,7 +4,8 @@ require __DIR__ . '/../vendor/autoload.php';
 use Slim\Factory\AppFactory;
 use Tuupola\Middleware\CorsMiddleware;
 use Dotenv\Dotenv;
-use App\Controllers\UserController; // Import the UserController class
+use App\Controllers\UserController;
+use App\Controllers\DishController;
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
@@ -36,7 +37,8 @@ $app->get('/api/hello', function ($request, $response, $args) {
 });
 
 $app->post('/api/v1/users', [UserController::class, 'createUser']);
-
-
+$app->post('/api/v1/dishes', [DishController::class, 'createDish']);
 $app->post('/api/v1/login', [UserController::class, 'login']);
+
+
 $app->run();
