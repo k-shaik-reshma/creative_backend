@@ -4,6 +4,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use Slim\Factory\AppFactory;
 use Tuupola\Middleware\CorsMiddleware;
 use Dotenv\Dotenv;
+use App\Controllers\UserController; // Import the UserController class
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
@@ -24,13 +25,17 @@ $corsOptions = [
 $app->add(new CorsMiddleware($corsOptions));
 
 $app->addRoutingMiddleware();
+$app->addBodyParsingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 // Define app routes
 $app->get('/api/hello', function ($request, $response, $args) {
-    $data = ['message' => 'Hello, Sumanth'];
+    $data = ['message' => 'Hello, Reshma'];
     $response->getBody()->write(json_encode($data));
     return $response->withHeader('Content-Type', 'application/json');
 });
+
+$app->post('/api/v1/users', [UserController::class, 'createUser']);
+
 
 $app->run();
