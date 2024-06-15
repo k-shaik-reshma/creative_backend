@@ -47,4 +47,16 @@ class DishService
             return ['error' => 'Dish could not be updated'];
         }
     }
+
+    public function deleteDish($id)
+    {
+        $dish = new Dish();
+        $dish->id = $id;
+
+        if ($dish->delete()) {
+            return ['success' => 'Dish deleted successfully'];
+        } else {
+            return ['error' => 'Dish could not be deleted'];
+        }
+    }
 }

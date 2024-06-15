@@ -45,6 +45,7 @@ $app->post('/api/v1/users', [UserController::class, 'createUser']);
 // dish routes
 $app->post('/api/v1/dishes', [DishController::class, 'createDish']);
 $app->put('/api/v1/dishes/{id}', [DishController::class, 'updateDish']);
+$app->delete('/api/v1/dishes/{id}', [DishController::class, 'deleteDish']);
 
 
 $app->run();

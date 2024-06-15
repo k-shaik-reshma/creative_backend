@@ -56,4 +56,21 @@ class DishController
         $response->getBody()->write(json_encode(['message' => $result['success']]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
+
+
+    public function deleteDish(Request $request, Response $response, array $args): Response
+    {
+        $id = $args['id'];
+
+        $result = $this->dishService->deleteDish($id);
+
+        if (isset($result['error'])) {
+            $response->getBody()->write(json_encode(['message' => $result['error']]));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+
+        $response->getBody()->write(json_encode(['message' => $result['success']]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    }
+
 }
