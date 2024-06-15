@@ -36,9 +36,15 @@ $app->get('/api/hello', function ($request, $response, $args) {
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$app->post('/api/v1/users', [UserController::class, 'createUser']);
-$app->post('/api/v1/dishes', [DishController::class, 'createDish']);
+// auth routes
 $app->post('/api/v1/login', [UserController::class, 'login']);
+
+// user routes
+$app->post('/api/v1/users', [UserController::class, 'createUser']);
+
+// dish routes
+$app->post('/api/v1/dishes', [DishController::class, 'createDish']);
+$app->put('/api/v1/dishes/{id}', [DishController::class, 'updateDish']);
 
 
 $app->run();

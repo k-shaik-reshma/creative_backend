@@ -42,7 +42,39 @@ class Dish
         if ($stmt->execute()) {
             return true;
         }
-        
+
+        return false;
+    }
+
+
+    public function update()
+    {
+        if (empty($this->user_id) || empty($this->dish_name) || empty($this->dish_type)) {
+            return false;
+        }
+
+        $query = "UPDATE " . $this->table . " SET user_id = :user_id, dish_name = :dish_name, dish_type = :dish_type, description = :description WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        // Clean data
+        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+        $this->dish_name = htmlspecialchars(strip_tags($this->dish_name));
+        $this->dish_type = htmlspecialchars(strip_tags($this->dish_type));
+        $this->description = htmlspecialchars(strip_tags($this->description));
+
+        // Bind data
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':user_id', $this->user_id);
+        $stmt->bindParam(':dish_name', $this->dish_name);
+        $stmt->bindParam(':dish_type', $this->dish_type);
+        $stmt->bindParam(':description', $this->description);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
         return false;
     }
 }
+
+
