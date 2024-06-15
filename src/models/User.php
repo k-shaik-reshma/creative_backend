@@ -25,10 +25,15 @@ class User
 
     public function create()
     {
+        if (empty($this->type) || empty($this->password) || empty($this->email) || empty($this->full_name)) {
+            return false;
+        }
+
+        if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+
         $query = "INSERT INTO " . $this->table . " (type, password, email, full_name) VALUES (:type, :password, :email, :full_name)";
-        echo $query;
-        print($query);
-        print_r($this->$query);
         $stmt = $this->conn->prepare($query);
 
         // Clean data
@@ -43,10 +48,7 @@ class User
         $stmt->bindParam(':password', $passwordHash);
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':full_name', $this->full_name);
-        print("HI this is password");
-        print($this->full_name);
-        print ("HI this is password");
-        print($stmt->queryString);
+
         if ($stmt->execute()) {
             return true;
         }

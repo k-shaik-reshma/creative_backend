@@ -18,7 +18,14 @@ class UserController
     public function createUser(Request $request, Response $response, array $args): Response
     {   
         $data = $request->getParsedBody();
-        print($data);
+
+        // Validate input data
+        if (empty($data['type']) || empty($data['password']) || empty($data['email']) || empty($data['full_name'])) {
+            $response->getBody()->write(json_encode(['message' => 'Invalid input data']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+
+        // Create user
         $result = $this->userService->createUser($data);
 
         if ($result) {
