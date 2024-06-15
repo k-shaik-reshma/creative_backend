@@ -71,4 +71,10 @@ class DishService
         $dish = new Dish();
         return $dish->getAllDishesWithChefDetails();
     }
+
+    public function getDishByIdWithChefDetails($id)
+    {   
+        $dish = new Dish();
+        return $dish->getDishByIdWithChefDetails($id);
+    }
 }

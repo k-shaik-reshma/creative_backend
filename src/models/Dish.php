@@ -126,6 +126,22 @@ class Dish
 
         return $dishes;
     }
+
+    public function getDishByIdWithChefDetails($id)
+    {
+        $query = "
+            SELECT d.id AS dish_id, d.dish_name, d.dish_type, d.description, u.id AS user_id, u.full_name, u.email
+            FROM {$this->table} d
+            INNER JOIN users u ON d.user_id = u.id
+            WHERE d.id = :id
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     
 }
 

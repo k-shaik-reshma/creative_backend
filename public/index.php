@@ -48,6 +48,7 @@ $app->put('/api/v1/dishes/{id}', [DishController::class, 'updateDish']);
 $app->delete('/api/v1/dishes/{id}', [DishController::class, 'deleteDish']);
 $app->get('/api/v1/users/{user_id}/dishes', [DishController::class, 'getDishesByUserId']);
 $app->get('/api/v1/dishes', [DishController::class, 'getAllDishesWithChefDetails']);
+$app->get('/api/v1/dish/{id}', [DishController::class, 'getDishByIdWithChefDetails']);
 
 
 $app->run();

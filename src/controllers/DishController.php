@@ -102,4 +102,17 @@ class DishController
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 
+    public function getDishByIdWithChefDetails(Request $request, Response $response, array $args): Response
+    {
+        $dishId = $args['id'];
+        $dish = $this->dishService->getDishByIdWithChefDetails($dishId);
+
+        if (!$dish) {
+            $response->getBody()->write(json_encode(['message' => 'Dish not found']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
+        }
+
+        $response->getBody()->write(json_encode($dish));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    }
 }
