@@ -73,4 +73,19 @@ class DishController
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 
+    public function getDishesByUserId(Request $request, Response $response, array $args): Response
+    {
+        $userId = $args['user_id'];
+
+        $dishes = $this->dishService->getDishesByUserId($userId);
+
+        if (empty($dishes)) {
+            $response->getBody()->write(json_encode(['message' => 'No dishes found for this user']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
+        }
+
+        $response->getBody()->write(json_encode($dishes));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    }
+
 }

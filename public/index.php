@@ -46,6 +46,7 @@ $app->post('/api/v1/users', [UserController::class, 'createUser']);
 $app->post('/api/v1/dishes', [DishController::class, 'createDish']);
 $app->put('/api/v1/dishes/{id}', [DishController::class, 'updateDish']);
 $app->delete('/api/v1/dishes/{id}', [DishController::class, 'deleteDish']);
+$app->get('/api/v1/users/{user_id}/dishes', [DishController::class, 'getDishesByUserId']);
 
 
 $app->run();

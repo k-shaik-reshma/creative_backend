@@ -59,4 +59,10 @@ class DishService
             return ['error' => 'Dish could not be deleted'];
         }
     }
+
+    public function getDishesByUserId($userId)
+    {
+        $dish = new Dish();
+        return $dish->findByUserId($userId);
+    }
 }

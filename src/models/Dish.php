@@ -93,6 +93,23 @@ class Dish
 
         return false;
     }
+
+    public function findByUserId($userId)
+    {
+        $query = "SELECT * FROM " . $this->table . " WHERE user_id = :user_id";
+        $stmt = $this->conn->prepare($query);
+
+        // Clean data
+        $userId = htmlspecialchars(strip_tags($userId));
+
+        // Bind data
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+
+        $dishes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $dishes;
+    }
 }
 
 
