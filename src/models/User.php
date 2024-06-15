@@ -83,4 +83,26 @@ class User
         return $user;
     }
 
+
+    public function findById(int $id): ?User
+    {
+        $query = "SELECT * FROM " . $this->table . " WHERE id = :id LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$row) {
+            return null; // User not found
+        }
+    
+        $this->id = $row['id'];
+        $this->type = $row['type'];
+        $this->password = $row['password'];
+        $this->email = $row['email'];
+        $this->full_name = $row['full_name'];
+    
+        return $this;
+    }
+
 }
