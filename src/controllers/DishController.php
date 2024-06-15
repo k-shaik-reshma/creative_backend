@@ -88,4 +88,18 @@ class DishController
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 
+
+    public function getAllDishesWithChefDetails(Request $request, Response $response, array $args): Response
+    {
+        $dishes = $this->dishService->getAllDishesWithChefDetails();
+
+        if (empty($dishes)) {
+            $response->getBody()->write(json_encode(['message' => 'No dishes found']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
+        }
+
+        $response->getBody()->write(json_encode($dishes));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    }
+
 }
