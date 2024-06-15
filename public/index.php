@@ -14,8 +14,9 @@ $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 // Define app routes
 $app->get('/api/hello', function ($request, $response, $args) {
-    $response->getBody()->write("Hello, world!");
-    return $response;
+    $data = ['message' => 'Hello, World!'];
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-Type', 'application/json');
 });
 
 $app->run();
