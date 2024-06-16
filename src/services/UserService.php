@@ -13,6 +13,8 @@ class UserService
         $user->password = $data["password"];
         $user->email = $data["email"];
         $user->full_name = $data["full_name"];
+        $user->phone_number = $data["phone_number"];
+        $user->location = $data["location"];
 
         return $user->create();
     }
