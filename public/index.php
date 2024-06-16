@@ -12,9 +12,11 @@ $dotenv->load();
 
 $app = AppFactory::create();
 
+$app->addRoutingMiddleware();
+
 // CORS Middleware configuration
 $corsOptions = [
-    "origin" => ["http://localhost:4200"],
+    "origin" => ["*"],
     "methods" => ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     "headers.allow" => ["Authorization", "Content-Type", "X-Requested-With"],
     "headers.expose" => [],
@@ -25,7 +27,6 @@ $corsOptions = [
 // Add the CORS middleware
 $app->add(new CorsMiddleware($corsOptions));
 
-$app->addRoutingMiddleware();
 $app->addBodyParsingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 

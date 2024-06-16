@@ -1,0 +1,1 @@
+define('UPLOADS_DIR', __DIR__ . '/../uploads');
