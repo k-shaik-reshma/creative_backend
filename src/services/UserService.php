@@ -17,14 +17,14 @@ class UserService
         return $user->create();
     }
 
-    public function authenticateUser(string $email, string $password): bool
+    public function authenticateUser(string $email, string $password): array
     {   
         $user = User::findByEmail($email);
-
+    
         if (!$user || !password_verify($password, $user->password)) {
-            return false; // Authentication failed
+            return ['authenticated' => false]; // Authentication failed
         }
-
-        return true; // Authentication succeeded
+    
+        return ['authenticated' => true, 'email' => $user->email, 'full_name' => $user->full_name, 'type' => $user->type, 'id' => $user->id];
     }
 }

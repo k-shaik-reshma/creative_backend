@@ -52,7 +52,7 @@ class UserController
             return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
         }
 
-        $response->getBody()->write(json_encode(['message' => 'Login successful']));
+        $response->getBody()->write(json_encode(['message' => 'Login successful', 'user' => $authenticated]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 
