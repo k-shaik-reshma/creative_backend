@@ -24,6 +24,31 @@ $corsOptions = [
     "cache" => 0,
 ];
 
+
+// Route to serve dish images
+$app->get('/uploads/dishes/{filename}', function ($request, $response, $args) {
+    $filename = $args['filename'];
+    $filePath = __DIR__ . '/../src/upload/dishes/' . $filename;
+
+    // Security check: Ensure the file exists and is within the intended directory
+    if (file_exists($filePath) && realpath($filePath) === $filePath) {
+        // Guess the MIME type based on the file extension
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $filePath);
+        finfo_close($finfo);
+
+        // Read the file content and return it as the response
+        $fileContent = file_get_contents($filePath);
+        $response->getBody()->write($fileContent);
+
+        return $response->withHeader('Content-Type', $mimeType);
+    } else {
+        // Return a 404 Not Found response if the file doesn't exist or is outside the intended directory
+        return $response->withStatus(404, 'File Not Found');
+    }
+});
+
+
 // Add the CORS middleware
 $app->add(new CorsMiddleware($corsOptions));
 

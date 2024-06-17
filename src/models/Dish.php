@@ -15,6 +15,7 @@ class Dish
     public $dish_name;
     public $dish_type;
     public $description;
+    public $image_url;
 
     public function __construct()
     {
@@ -24,7 +25,7 @@ class Dish
 
     public function create()
     {
-        $query = "INSERT INTO " . $this->table . " (user_id, dish_name, dish_type, description) VALUES (:user_id, :dish_name, :dish_type, :description)";
+        $query = "INSERT INTO " . $this->table . " (user_id, dish_name, dish_type, description, image_url) VALUES (:user_id, :dish_name, :dish_type, :description, :image_url)";
         $stmt = $this->conn->prepare($query);
 
         // Clean data
@@ -32,12 +33,14 @@ class Dish
         $this->dish_name = htmlspecialchars(strip_tags($this->dish_name));
         $this->dish_type = htmlspecialchars(strip_tags($this->dish_type));
         $this->description = htmlspecialchars(strip_tags($this->description));
+        $this->image_url = htmlspecialchars(strip_tags($this->image_url));
 
         // Bind data
         $stmt->bindParam(':user_id', $this->user_id);
         $stmt->bindParam(':dish_name', $this->dish_name);
         $stmt->bindParam(':dish_type', $this->dish_type);
         $stmt->bindParam(':description', $this->description);
+        $stmt->bindParam(':image_url', $this->image_url);
 
         if ($stmt->execute()) {
             return true;
@@ -114,7 +117,7 @@ class Dish
     public function getAllDishesWithChefDetails()
     {
         $query = "
-            SELECT d.id AS dish_id, d.dish_name, d.dish_type, d.description, u.id AS user_id, u.full_name, u.email
+            SELECT d.id AS dish_id, d.dish_name, d.dish_type, d.description, d.image_url, u.id AS user_id, u.full_name, u.email
             FROM {$this->table} d
             INNER JOIN users u ON d.user_id = u.id
         ";

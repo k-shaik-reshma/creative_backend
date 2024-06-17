@@ -21,6 +21,7 @@ class DishService
         $dish->dish_name = $data['dish_name'];
         $dish->dish_type = $data['dish_type'];
         $dish->description = $data['description'];
+        $dish->image_url = $data['image_url'];
         return $dish->create();
     }
 

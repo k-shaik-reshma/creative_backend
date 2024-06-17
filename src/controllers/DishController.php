@@ -48,8 +48,8 @@ class DishController
         $image->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
     
         // Include the image path in the data array
-        $data['image_path'] = $directory . DIRECTORY_SEPARATOR . $filename;
-    
+        $data['image_url'] = $directory . DIRECTORY_SEPARATOR . $filename;
+
         $result = $this->dishService->createDish($data);
     
         if (isset($result['error'])) {
@@ -57,7 +57,7 @@ class DishController
             return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
         }
     
-        $response->getBody()->write(json_encode(['message' => "Dish created successfully", 'image_path' => $data['image_path']]));
+        $response->getBody()->write(json_encode(['message' => "Dish created successfully", 'image_url' => $data['image_url']]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
     }
 
