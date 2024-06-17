@@ -117,7 +117,7 @@ class Dish
     public function getAllDishesWithChefDetails()
     {
         $query = "
-            SELECT d.id AS dish_id, d.dish_name, d.dish_type, d.description, d.image_url, u.id AS user_id, u.full_name, u.email
+            SELECT d.id AS dish_id, d.dish_name, d.dish_type, d.description,d.image_url, u.id AS user_id, u.full_name, u.email, u.phone_number, u.location
             FROM {$this->table} d
             INNER JOIN users u ON d.user_id = u.id
         ";
