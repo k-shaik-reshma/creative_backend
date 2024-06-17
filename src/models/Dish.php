@@ -99,7 +99,7 @@ class Dish
 
     public function findByUserId($userId)
     {
-        $query = "SELECT * FROM " . $this->table . " WHERE user_id = :user_id";
+        $query = "SELECT * FROM dishes inner join users on users.id = dishes.user_id WHERE user_id = :user_id";
         $stmt = $this->conn->prepare($query);
 
         // Clean data
@@ -117,7 +117,7 @@ class Dish
     public function getAllDishesWithChefDetails()
     {
         $query = "
-            SELECT d.id AS dish_id, d.dish_name, d.dish_type, d.description,d.image_url, u.id AS user_id, u.full_name, u.email, u.phone_number, u.location
+            SELECT d.id AS id, d.dish_name, d.dish_type, d.description,d.image_url, u.id AS user_id, u.full_name, u.email, u.phone_number, u.location
             FROM {$this->table} d
             INNER JOIN users u ON d.user_id = u.id
         ";
@@ -133,7 +133,7 @@ class Dish
     public function getDishByIdWithChefDetails($id)
     {
         $query = "
-            SELECT d.id AS dish_id, d.dish_name, d.dish_type, d.description, u.id AS user_id, u.full_name, u.email
+            SELECT d.id AS dish_id, d.dish_name, d.dish_type, d.description, u.id AS user_id, u.full_name, u.email, u.phone_number, u.location
             FROM {$this->table} d
             INNER JOIN users u ON d.user_id = u.id
             WHERE d.id = :id
