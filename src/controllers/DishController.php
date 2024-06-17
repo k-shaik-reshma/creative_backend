@@ -18,20 +18,46 @@ class DishController
     public function createDish(Request $request, Response $response, array $args): Response
     {
         $data = $request->getParsedBody();
-
-        if (empty($data['user_id']) || empty($data['dish_name']) || empty($data['dish_type'])) {
-            $response->getBody()->write(json_encode(['message' => 'User ID, dish name, and dish type are required']));
+        $uploadedFiles = $request->getUploadedFiles(); // Get uploaded files
+    
+        if (empty($data['user_id']) || empty($data['dish_name']) || empty($data['dish_type']) || empty($uploadedFiles['image'])) {
+            $response->getBody()->write(json_encode(['message' => 'User ID, dish name, dish type, and image are required']));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
         }
-
+    
+        $image = $uploadedFiles['image'];
+    
+        // Validate image upload
+        if ($image->getError() !== UPLOAD_ERR_OK) {
+            $response->getBody()->write(json_encode(['message' => 'Error uploading image']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+    
+        // Define the directory to save the image
+        $directory = __DIR__ . '/../uploads/dishes';
+    
+        // Ensure the directory exists and is writable
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+    
+        // Generate a unique filename for the image
+        $filename = sprintf('%s.%s', uniqid(), pathinfo($image->getClientFilename(), PATHINFO_EXTENSION));
+    
+        // Move the uploaded file to the directory
+        $image->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+    
+        // Include the image path in the data array
+        $data['image_path'] = $directory . DIRECTORY_SEPARATOR . $filename;
+    
         $result = $this->dishService->createDish($data);
-
+    
         if (isset($result['error'])) {
             $response->getBody()->write(json_encode(['message' => $result['error']]));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
         }
-
-        $response->getBody()->write(json_encode(['message' => "Dish created successfully"]));
+    
+        $response->getBody()->write(json_encode(['message' => "Dish created successfully", 'image_path' => $data['image_path']]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
     }
 
